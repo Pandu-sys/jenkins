@@ -1,4 +1,4 @@
-pipeline {
+/* pipeline {
     agent { 
         node { 
             label 'ROBOSHOP' 
@@ -76,6 +76,106 @@ pipeline {
         }
         failure { 
             echo 'I will Run when it is failed'
+        }
+    }
+} */
+
+pipeline {
+    agent {
+        node {
+            label 'ROBOSHOP'
+        }
+    }
+
+    environment {
+        COURSE = "Jenkins"
+    }
+
+    options {
+        disableConcurrentBuilds()
+        timeout(time: 15, unit: 'MINUTES')
+    }
+
+    parameters {
+        string(
+            name: 'PERSON',
+            defaultValue: 'Mr Jenkins',
+            description: 'Who should I say hello to?'
+        )
+
+        text(
+            name: 'BIOGRAPHY',
+            defaultValue: '',
+            description: 'Enter some information about the person'
+        )
+
+        booleanParam(
+            name: 'DEPLOY',
+            defaultValue: true,
+            description: 'Deploy the application'
+        )
+
+        choice(
+            name: 'CHOICE',
+            choices: ['One', 'Two', 'Three'],
+            description: 'Pick something'
+        )
+
+        password(
+            name: 'PASSWORD',
+            defaultValue: 'SECRET',
+            description: 'Enter a password'
+        )
+    }
+
+    stages {
+
+        stage('Build') {
+            steps {
+                sh '''
+                    echo "Building"
+                    echo "Course is: $COURSE"
+                    echo "Hello $PERSON"
+                    echo "Biography: $BIOGRAPHY"
+                    echo "Choice: $CHOICE"
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh '''
+                    echo "Testing"
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression {
+                    params.DEPLOY
+                }
+            }
+
+            steps {
+                sh '''
+                    echo "Deploying"
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'I will always say Hello again!'
+        }
+
+        success {
+            echo 'I will run when success'
+        }
+
+        failure {
+            echo 'I will run when it is failed'
         }
     }
 }
