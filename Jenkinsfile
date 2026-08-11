@@ -1,10 +1,9 @@
 pipeline {
-    agent {
-        node{
-            label 'ROBOSHOP'
-        }
+    agent { 
+        node { 
+            label 'ROBOSHOP' 
+        } 
     }
-
     environment {
         COURSE = "Jenkins"
     }
@@ -37,17 +36,6 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                expression { "${params.DEPLOY}" }
-            }
-            /* input {
-                message "Should we continue?"
-                ok "Yes, we should."
-                submitter "alice,bob"
-                parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-                } */
-            }
             steps {
                 script {
                     sh """
@@ -57,6 +45,18 @@ pipeline {
             }
         }
         stage('Deploy') {
+            when {
+                // Evaluates the boolean parameter directly
+                expression { "${params.DEPLOY}" == "true" }
+            }
+            /* input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            } */
             steps {
                 script {
                     sh """
@@ -67,17 +67,15 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo 'I will always say Hello again'
+    post { 
+        always { 
+            echo 'I will always say Hello again!'
         }
-
-        success {
+        success { 
             echo 'I will run when success'
         }
-
-        failure {
-            echo 'I will run when it is failed'
+        failure { 
+            echo 'I will Run when it is failed'
         }
     }
 }
