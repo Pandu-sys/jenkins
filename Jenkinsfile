@@ -8,9 +8,9 @@ pipeline {
     environment {
         COURSE = "Jenkins"
     }
-    // options {
-
-    // }
+    options {
+        disableConcurrentBuilds()
+    }
 
     stages {
         stage('Build') {
