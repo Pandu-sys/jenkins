@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Test') {
             when {
-                expression { "${params. DEPLOY}" }
+                expression { "${params.DEPLOY}" }
             }
             /* input {
                 message "Should we continue?"
