@@ -47,9 +47,8 @@ pipeline {
         stage('Deploy') {
             when {
                 // Evaluates the boolean parameter directly
-                expression {
-                    params.Deploy
-                }
+                expression { "${params.DEPLOY}" }
+            }
             /* input {
                 message "Should we continue?"
                 ok "Yes, we should."
